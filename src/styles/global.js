@@ -14,13 +14,13 @@ html,border-style,#root{
 }
 
 body{
-    background: #0D2636;
+    background: #123331;
     font-size: 14px;
     -webkit-font-smoothing: antialiased !important
 }
 
 body,input-security,button{
-    color: #222;
+    color: #F7F7F7;
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
 }

@@ -7,10 +7,13 @@ export default function Main(){
     return(
 
         <Container>
-            <FaGithub size={16}/>
-            <h1>Meus Repositorios</h1>
+            <h1>
+                <FaGithub size={16}/>
+                Meus Repositorios
+            </h1>
+
             <Form onsSubmit={()=>{}}>
-                <input type='text' placeholder='adicionar repositorios'/>
+                <input type='text' placeholder='Adicionar Repositorios'/>
                 <SubmitButton>
                     <FaPlus color='#FFF' size={14}/>
                 </SubmitButton>
