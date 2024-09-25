@@ -1,67 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import api from '../../services/api'; // Importa o serviço de API para fazer as requisições HTTP
-import { Container } from './style';  // Importa o componente de estilo
+import { IssuesList, Container, Owner } from './style';  // Importa o componente de estilo
+import { FaArrowLeft } from 'react-icons/fa';
 
 export default function Repositorio() {
-
     const { repositorio } = useParams();  // Usa o hook useParams para obter o parâmetro 'repositorio' da URL
     const [repositoriosData, setRepositorioData] = useState({}); // Define o estado para armazenar os dados do repositório
     const [issues, setIssues] = useState([]);  // Define o estado para armazenar as issues do repositório
     const [loading, setLoading] = useState(true);  // Define o estado de loading para controlar a exibição durante o carregamento
   
     useEffect(() => {
-        // Função assíncrona que faz as requisições para obter dados do repositório e issues
         async function load() {
-            const nomeRepo = repositorio;  // Obtém o nome do repositório a partir do parâmetro da URL
+            const nomeRepo = repositorio;
 
             try {
-                // Faz duas requisições ao mesmo tempo: uma para os dados do repositório e outra para as issues abertas
                 const [repositoriosData, issuesData] = await Promise.all([
-                    api.get(`/repos/${nomeRepo}`), // Requisição para obter dados do repositório
-                    api.get(`/repos/${nomeRepo}/issues`, { // Requisição para obter as issues abertas do repositório
+                    api.get(`/repos/${nomeRepo}`),
+                    api.get(`/repos/${nomeRepo}/issues`, {
                         params: {
-                            state: 'open', // Somente issues abertas
-                            per_page: 5   // Limita a 5 issues por página
+                            state: 'open',
+                            per_page: 5
                         }
                     })
                 ]);
                 
-                // Atualiza o estado com os dados recebidos
                 setRepositorioData(repositoriosData.data);
                 setIssues(issuesData.data);
-                setLoading(false); // Desativa o estado de loading
+                setLoading(false);
             } catch (error) {
-                // Caso ocorra um erro durante as requisições, ele é capturado aqui
                 console.error("Erro ao carregar os dados do repositório", error);
-                setLoading(false); // Mesmo com erro, desativa o loading
+                setLoading(false);
             }
         }
 
-        load(); // Chama a função de carregamento quando o componente for montado
-        
-    }, [repositorio]);  // O useEffect depende do valor de 'repositorio', ou seja, ele roda novamente se o parâmetro mudar
+        load();
+    }, [repositorio]);
 
     return (
-       <Container>
-            {loading ? (  // Se o estado de loading estiver true, exibe "Carregando..."
-                <h1>Carregando...</h1>
-            ) : (
-                // Quando o loading é false, exibe os dados do repositório e as issues
-                <>
-                    <h1>{repositoriosData.name}</h1> {/* Exibe o nome do repositório */}
-                    <p>{repositoriosData.description}</p> {/* Exibe a descrição do repositório */}
-                    <ul>
-                        {issues.map(issue => (  // Faz um map nas issues e exibe o título de cada uma como link
-                            <li key={issue.id}>
-                                <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
-                                    {issue.title} {/* Título da issue */}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
-       </Container>
+        <Container>
+        {/* Link para voltar à página anterior */}
+        <Link to="/"> 
+            <FaArrowLeft color="#000" size={30} /> {/* Ícone de seta para a esquerda */}
+        </Link>
+    
+        {/* Verifica se os dados estão carregando */}
+        {loading ? (
+            <h1>Carregando...</h1>  /* Exibe "Carregando..." enquanto os dados estão sendo buscados */
+        ) : (
+            <Owner>
+                {/* Verifica se os dados do dono do repositório estão disponíveis */}
+                {repositoriosData.owner && (
+                    <>
+                        {/* Imagem do avatar do dono do repositório */}
+                        <img 
+                            src={repositoriosData.owner.avatar_url} 
+                            alt={repositoriosData.owner.login} 
+                        />
+                        {/* Nome do repositório */}
+                        <h1>{repositoriosData.name}</h1>
+                        {/* Descrição do repositório */}
+                        <p>{repositoriosData.description}</p>
+                    </>
+                )}
+            </Owner>
+        )}
+    
+        {/* Lista de issues do repositório */}
+        <IssuesList>
+            {/* Mapeia cada issue retornada pela API */}
+            {issues.map(issue => (
+                <li key={String(issue.id)}>
+                    {/* Imagem do avatar do usuário que abriu a issue */}
+                    <img src={issue.user.avatar_url} alt={issue.user.login} />
+                    <div>
+                        <strong>
+                            {/* Link para a página da issue */}
+                            <a href={issue.html_url}>{issue.title}</a>
+                        </strong>
+    
+                        {/* Exibe as labels associadas à issue */}
+                        <tags>
+                            {issue.labels.map(label => (
+                                <span key={String(label.id)}>{label.name}</span>
+                            ))}
+                        </tags>
+    
+                        {/* Nome de login do usuário que criou a issue */}
+                        <p>{issue.user.login}</p>
+                    </div>
+                </li>
+            ))}
+        </IssuesList>
+    </Container>
+    
     );
 }
