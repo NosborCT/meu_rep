@@ -76,7 +76,7 @@ export default function Repositorio() {
                     <div>
                         <strong>
                             {/* Link para a página da issue */}
-                            <a href={issue.html_url}>{issue.title}</a>
+                            <a href={issue.html_url} target="_blank" rel="noreferrer" >{issue.title}</a>
                         </strong>
     
                         {/* Exibe as labels associadas à issue */}
