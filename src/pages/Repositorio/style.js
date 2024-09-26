@@ -114,3 +114,93 @@ export const IssuesList = styled.ul`
         }
     }
 `;
+
+export const PageActions = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .button {
+        background-color: #222;
+        color: #fff;
+        width: 8.5em;
+        height: 2.9em;
+        border: 0.2em solid transparent;
+        border-radius: 11px;
+        text-align: center;
+        transition: all 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        position: relative;
+        padding: 0.5em 1em;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: #3654ff;
+        border-color: #3654ff;
+    }
+
+    .button svg {
+        width: 1.2em;
+        height: 1.2em;
+        transition: transform 0.4s ease;
+    }
+
+
+    
+    .button:hover svg {
+        transform: translateX(5px);
+    }
+
+    .text {
+        margin: 0;
+    }
+
+    button {
+        outline: 0;
+        border: 0;
+        background: #222;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+`;
+
+export const Filters = styled.div`
+    width: 18.75rem;
+    display: flex; /* Usando flexbox para layout */
+    align-items: center; /* Alinhamento vertical ao centro */
+    justify-content: space-around; /* Espaço entre os itens */
+    
+    button {
+        outline: 0; /* Remove o contorno padrão do botão */
+        border: 0; /* Remove a borda do botão */
+        border-radius: 4px;
+        background: #222; /* Cor de fundo do botão */
+        color: #fff; /* Cor do texto do botão */
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem; /* Preenchimento do botão corrigido */
+        cursor: pointer; /* Cursor em forma de ponteiro ao passar o mouse */
+        transition: background 0.3s; /* Transição suave para a cor de fundo */
+
+        &:hover {
+            background: #3654ff; /* Cor de fundo ao passar o mouse */
+        }
+    }
+`;
