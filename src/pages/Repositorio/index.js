@@ -61,7 +61,7 @@ export default function Repositorio() {
         }
 
         LoadIssue();
-    }, [page, repositorio]);
+    }, [page, repositorio, state]);
 
     function handlePage(action) {
         setPage(action === 'back' ? page - 1 : page + 1);
